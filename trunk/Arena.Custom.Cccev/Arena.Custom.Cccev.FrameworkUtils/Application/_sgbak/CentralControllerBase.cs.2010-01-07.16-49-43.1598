@@ -1,0 +1,166 @@
+﻿/**********************************************************************
+* Description:  Base controller object that offers shared cache management
+* Created By:   Jason Offutt @ Central Christian Church of the East Valley
+* Date Created: 12/30/2009
+*
+* $Workfile: CentralControllerBase.cs $
+* $Revision: 6 $
+* $Header: /trunk/Arena.Custom.Cccev/Arena.Custom.Cccev.FrameworkUtils/BLL/CentralControllerBase.cs   6   2010-01-06 16:42:40-07:00   JasonO $
+*
+* $Log: /trunk/Arena.Custom.Cccev/Arena.Custom.Cccev.FrameworkUtils/BLL/CentralControllerBase.cs $
+*  
+*  Revision: 6   Date: 2010-01-06 23:42:40Z   User: JasonO 
+*  
+*  Revision: 5   Date: 2010-01-06 21:32:20Z   User: JasonO 
+*  
+*  Revision: 4   Date: 2010-01-04 22:18:11Z   User: JasonO 
+*  
+*  Revision: 3   Date: 2009-12-30 18:57:25Z   User: JasonO 
+*  
+*  Revision: 2   Date: 2009-12-30 18:14:27Z   User: JasonO 
+*  
+*  Revision: 1   Date: 2009-12-30 17:36:05Z   User: JasonO 
+**********************************************************************/
+
+using System;
+
+namespace Arena.Custom.Cccev.FrameworkUtils.BLL
+{
+    public static class CacheManager
+    {
+        /// <summary>
+        /// Will attempt to retrieve matching object by its key from the server cache.
+        /// If unsuccessful, will attempt to instantiate the object via constructor.
+        /// </summary>
+        /// <typeparam name="T">Generic Type</typeparam>
+        /// <param name="keyPrefix">Prefix for cache key</param>
+        /// <param name="id">ID value to be appended to cache key</param>
+        /// <returns>Object corresponding to key</returns>
+        public static T GetCachedObject<T>(string keyPrefix, int id)
+        {
+            string key = GetKey(keyPrefix, id);
+            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
+            object cachedObject;
+
+            if (cache.Get(key) != null)
+            {
+                return (T)cache.Get(key);
+            }
+
+            try
+            {
+                Type type = typeof(T);
+                cachedObject = Activator.CreateInstance(type, id);
+                SaveObjectToCache(keyPrefix, id, cachedObject);
+                return (T)cachedObject;
+            }
+            catch
+            {
+                cachedObject = Activator.CreateInstance<T>();
+                SaveObjectToCache(keyPrefix, id, cachedObject);
+                return (T)cachedObject;
+            }
+        }
+
+        /// <summary>
+        /// Will save an object to the current cache.
+        /// </summary>
+        /// <param name="keyPrefix">Prefix for cache key</param>
+        /// <param name="id">ID value to be appended to cache key</param>
+        /// <param name="val">Object to be cached</param>
+        public static void SaveObjectToCache(string keyPrefix, int id, object val)
+        {
+            string key = GetKey(keyPrefix, id);
+            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
+            cache.Insert(key, val);
+        }
+
+        /// <summary>
+        /// Will remove an object from the current cache.
+        /// </summary>
+        /// <param name="keyPrefix">Prefix for cache key</param>
+        /// <param name="id">ID value to be appended to cache key</param>
+        public static void RemoveObjectFromCache(string keyPrefix, int id)
+        {
+            string key = GetKey(keyPrefix, id);
+            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
+            cache.Remove(key);
+        }
+
+        private static string GetKey(string prefix, int id)
+        {
+            return string.Format("{0}_{1}", prefix, id);
+        }
+    }
+
+    /// <summary>
+    /// Base Controller class to add basic caching functionality via static methods
+    /// to concrete implementations.
+    /// </summary>
+    public abstract class CentralControllerBase
+    {
+        /// <summary>
+        /// Will attempt to retrieve matching object by its key from the server cache.
+        /// If unsuccessful, will attempt to instantiate the object via constructor.
+        /// </summary>
+        /// <typeparam name="T">Generic Type</typeparam>
+        /// <param name="keyPrefix">Prefix for cache key</param>
+        /// <param name="id">ID value to be appended to cache key</param>
+        /// <returns>Object corresponding to key</returns>
+        protected static T GetCachedObject<T>(string keyPrefix, int id)
+        {
+            string key = GetKey(keyPrefix, id);
+            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
+            object cachedObject;
+
+            if (cache.Get(key) != null)
+            {
+                return (T) cache.Get(key);   
+            }
+
+            try
+            {
+                Type type = typeof(T);
+                cachedObject = Activator.CreateInstance(type, id);
+                SaveObjectToCache(keyPrefix, id, cachedObject);
+                return (T) cachedObject;
+            }
+            catch
+            {
+                cachedObject = Activator.CreateInstance<T>();
+                SaveObjectToCache(keyPrefix, id, cachedObject);
+                return (T) cachedObject;
+            }
+        }
+
+        /// <summary>
+        /// Will save an object to the current cache.
+        /// </summary>
+        /// <param name="keyPrefix">Prefix for cache key</param>
+        /// <param name="id">ID value to be appended to cache key</param>
+        /// <param name="val">Object to be cached</param>
+        protected static void SaveObjectToCache(string keyPrefix, int id, object val)
+        {
+            string key = GetKey(keyPrefix, id);
+            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
+            cache.Insert(key, val);
+        }
+
+        /// <summary>
+        /// Will remove an object from the current cache.
+        /// </summary>
+        /// <param name="keyPrefix">Prefix for cache key</param>
+        /// <param name="id">ID value to be appended to cache key</param>
+        protected static void RemoveObjectFromCache(string keyPrefix, int id)
+        {
+            string key = GetKey(keyPrefix, id);
+            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
+            cache.Remove(key);
+        }
+
+        private static string GetKey(string prefix, int id)
+        {
+            return string.Format("{0}_{1}", prefix, id);
+        }
+    }
+}

@@ -1,0 +1,17 @@
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Arena.Custom.Cccev.FrameworkUtils.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Arena.Custom.Cccev.FrameworkUtils.pdb
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Arena.Custom.Cccev.DataUtils.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Arena.Framework.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Arena.Portal.UI.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Neodynamic.WebControls.ImageDraw.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\AjaxControlToolkit.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Interop.ActiveDs.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\ceTe.DynamicPDF.20.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\aspNetEmail.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\ComponentArt.Web.UI.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Aspose.Words.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Arena.Custom.Cccev.DataUtils.pdb
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\obj\Release\ResolveAssemblyReference.cache
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\obj\Release\Arena.Custom.Cccev.FrameworkUtils.dll
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\obj\Release\Arena.Custom.Cccev.FrameworkUtils.pdb
+C:\Arena Trunk\trunk\Arena.Custom.Cccev\Arena.Custom.Cccev.FrameworkUtils\bin\Release\Payflow_dotNET.dll

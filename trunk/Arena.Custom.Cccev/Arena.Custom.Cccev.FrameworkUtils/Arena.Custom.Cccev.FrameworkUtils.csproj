@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5E4542EB-C79E-4F07-B3F6-8200B234FDC8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Arena.Custom.Cccev.FrameworkUtils</RootNamespace>
+    <AssemblyName>Arena.Custom.Cccev.FrameworkUtils</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Arena.Framework, Version=2009.1.100.34401, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Arena\bin\Arena.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Arena.Portal.UI, Version=2009.1.100.34401, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Arena\bin\Arena.Portal.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FrameworkConstants\Enums.cs" />
+    <Compile Include="Util\ArenaPersonFactory.cs" />
+    <Compile Include="Util\CacheFactory.cs" />
+    <Compile Include="Util\CacheHelper.cs" />
+    <Compile Include="Application\CentralControllerBase.cs" />
+    <Compile Include="Util\ConfigurationBase.cs" />
+    <Compile Include="Entity\HttpCache.cs" />
+    <Compile Include="Entity\DictionaryCache.cs" />
+    <Compile Include="Application\PersonController.cs" />
+    <Compile Include="Util\PersonUtils.cs" />
+    <Compile Include="Entity\SessionCache.cs" />
+    <Compile Include="Data\ArenaDataContext.cs" />
+    <Compile Include="Data\RepositoryHelper.cs" />
+    <Compile Include="Entity\AppLog.cs" />
+    <Compile Include="Entity\CentralObjectBase.cs" />
+    <Compile Include="FrameworkConstants\ArenaConstants.cs" />
+    <Compile Include="FrameworkConstants\SystemGuids.cs" />
+    <Compile Include="Entity\ICachable.cs" />
+    <Compile Include="Entity\IDynamicValue.cs" />
+    <Compile Include="Entity\IModifiable.cs" />
+    <Compile Include="Entity\IPersonFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\DataGridHelper.cs" />
+    <Compile Include="UI\DynamicCheckBox.cs" />
+    <Compile Include="UI\DynamicDateTextBox.cs" />
+    <Compile Include="UI\DynamicDocumentPicker.cs" />
+    <Compile Include="UI\DynamicDropDownList.cs" />
+    <Compile Include="UI\DynamicTextBox.cs" />
+    <Compile Include="UI\ExceptionHelper.cs" />
+    <Compile Include="UI\PersonAttributeUtils.cs" />
+    <Compile Include="Util\RepositoryFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Arena.Custom.Cccev.DataUtils\Arena.Custom.Cccev.DataUtils.csproj">
+      <Project>{652A7969-41E7-440A-9AA1-9A61D59C1973}</Project>
+      <Name>Arena.Custom.Cccev.DataUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

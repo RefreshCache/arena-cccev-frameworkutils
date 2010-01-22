@@ -4,10 +4,14 @@
 * Date Created: 12/30/2009
 *
 * $Workfile: CentralControllerBase.cs $
-* $Revision: 8 $
-* $Header: /trunk/Arena.Custom.Cccev/Arena.Custom.Cccev.FrameworkUtils/Application/CentralControllerBase.cs   8   2010-01-11 14:38:49-07:00   JasonO $
+* $Revision: 10 $
+* $Header: /trunk/Arena.Custom.Cccev/Arena.Custom.Cccev.FrameworkUtils/Application/CentralControllerBase.cs   10   2010-01-21 17:41:45-07:00   JasonO $
 *
 * $Log: /trunk/Arena.Custom.Cccev/Arena.Custom.Cccev.FrameworkUtils/Application/CentralControllerBase.cs $
+*  
+*  Revision: 10   Date: 2010-01-22 00:41:45Z   User: JasonO 
+*  
+*  Revision: 9   Date: 2010-01-22 00:28:06Z   User: JasonO 
 *  
 *  Revision: 8   Date: 2010-01-11 21:38:49Z   User: JasonO 
 *  
@@ -27,6 +31,7 @@
 **********************************************************************/
 
 using System;
+using Arena.Custom.Cccev.FrameworkUtils.Entity;
 using Arena.Custom.Cccev.FrameworkUtils.Util;
 
 namespace Arena.Custom.Cccev.FrameworkUtils.Application
@@ -66,15 +71,14 @@ namespace Arena.Custom.Cccev.FrameworkUtils.Application
             {
                 Type type = typeof(T);
                 cachedObject = Activator.CreateInstance(type, id);
-                SaveObjectToCache(keyPrefix, id, cachedObject);
-                return (T) cachedObject;
             }
             catch
             {
                 cachedObject = Activator.CreateInstance<T>();
-                SaveObjectToCache(keyPrefix, id, cachedObject);
-                return (T) cachedObject;
             }
+
+            SaveObjectToCache(cache, keyPrefix, id, cachedObject);
+            return (T)cachedObject;
         }
 
         /// <summary>
@@ -85,8 +89,12 @@ namespace Arena.Custom.Cccev.FrameworkUtils.Application
         /// <param name="val">Object to be cached</param>
         protected static void SaveObjectToCache(string keyPrefix, int id, object val)
         {
+            SaveObjectToCache(CacheFactory.GetCache(CacheHelper.GetCacheType()), keyPrefix, id, val);
+        }
+
+        protected static void SaveObjectToCache(ICachable cache, string keyPrefix, int id, object val)
+        {
             string key = GetKey(keyPrefix, id);
-            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
             cache.Insert(key, val);
         }
 
@@ -97,8 +105,12 @@ namespace Arena.Custom.Cccev.FrameworkUtils.Application
         /// <param name="id">ID value to be appended to cache key</param>
         protected static void RemoveObjectFromCache(string keyPrefix, int id)
         {
+            RemoveObjectFromCache(CacheFactory.GetCache(CacheHelper.GetCacheType()), keyPrefix, id);
+        }
+
+        protected static void RemoveObjectFromCache(ICachable cache, string keyPrefix, int id)
+        {
             string key = GetKey(keyPrefix, id);
-            var cache = CacheFactory.GetCache(CacheHelper.GetCacheType());
             cache.Remove(key);
         }
 

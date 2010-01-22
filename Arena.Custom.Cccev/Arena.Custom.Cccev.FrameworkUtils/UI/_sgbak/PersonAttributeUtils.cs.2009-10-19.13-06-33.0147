@@ -1,0 +1,202 @@
+﻿/**********************************************************************
+* Description:	TBD
+* Created By:   Jason Offutt @ Central Christian Church of the East Valley
+* Date Created:	TBD
+*
+* $Workfile: PersonAttributeUtils.cs $
+* $Revision: 4 $ 
+* $Header: /trunk/Arena.Custom.Cccev/Arena.Custom.Cccev.FrameworkUtils/UI/PersonAttributeUtils.cs   4   2009-07-08 11:29:58-07:00   JasonO $
+* 
+* $Log: /trunk/Arena.Custom.Cccev/Arena.Custom.Cccev.FrameworkUtils/UI/PersonAttributeUtils.cs $
+*  
+*  Revision: 4   Date: 2009-07-08 18:29:58Z   User: JasonO 
+*  
+*  Revision: 3   Date: 2009-07-07 20:40:59Z   User: JasonO 
+*  
+*  Revision: 2   Date: 2009-07-06 22:21:11Z   User: JasonO 
+*  
+*  Revision: 1   Date: 2009-06-30 16:34:01Z   User: JasonO 
+*  
+*  Revision: 2   Date: 2009-06-25 18:20:17Z   User: JasonO 
+*  
+*  Revision: 1   Date: 2009-06-25 17:34:22Z   User: JasonO 
+**********************************************************************/
+
+using System;
+using System.Web.UI;
+using Arena.Core;
+using Arena.Custom.Cccev.DataUtils;
+using Arena.Enums;
+
+namespace Arena.Custom.Cccev.FrameworkUtils.UI
+{
+    public static class PersonAttributeUtils
+    {
+        /// <summary>
+        /// This (factory) method will create controls based on the given PersonAttribute object and add them to the
+        /// container control that's passed in.  This allows the dynamic control to participate in ViewState.
+        /// </summary>
+        /// <param name="attribute"><see cref="Arena.Core.PersonAttribute">PersonAttribute</see> to represent</param>
+        /// <param name="cssClass">CSS class to append to the dynamic control</param>
+        /// <param name="parentContainer">Parent Control to add the control to</param>
+        /// <param name="setValue">Boolean indicating whether or not to set the value of the control</param>
+        public static void CreateControl(PersonAttribute attribute, string cssClass, Control parentContainer, bool setValue)
+        {
+            if (attribute.Visible)
+            {
+                switch (attribute.AttributeType)
+                {
+                    case DataType.Currency:
+                    case DataType.Decimal:
+                        CreateTextBox(attribute, cssClass, parentContainer, setValue,
+                            attribute.DecimalValue != DataUtils.Constants.NULL_DECIMAL ? attribute.DecimalValue.ToString() : DataUtils.Constants.NULL_STRING);
+                        break;
+                    case DataType.Int:
+                        CreateTextBox(attribute, cssClass, parentContainer, setValue,
+                            attribute.IntValue != DataUtils.Constants.NULL_INT ? attribute.IntValue.ToString() : DataUtils.Constants.NULL_STRING);
+                        break;
+                    case DataType.DateTime:
+                        CreateDateTextBox(attribute, cssClass, parentContainer, setValue);
+                        break;
+                    case DataType.String:
+                    case DataType.Guid:
+                    case DataType.Url:
+                        CreateTextBox(attribute, cssClass, parentContainer, setValue, attribute.StringValue);
+                        break;
+                    case DataType.Lookup:
+                        CreateDropDownList(attribute, cssClass, parentContainer, setValue);
+                        break;
+                    case DataType.YesNo:
+                        CreateCheckBox(attribute, cssClass, parentContainer, setValue);
+                        break;
+                    case DataType.Document:
+                        CreateDocumentPicker(attribute, cssClass, parentContainer, setValue);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a formatted ID for a person attribute control based on the attribute's type.  The control corresponding to the ID
+        /// should be created with the CreateControl() method.
+        /// </summary>
+        /// <param name="attribute">Arena.Core.PersonAttribute</param>
+        /// <returns>Formatted string representing a control ID of the given PersonAttribute</returns>
+        public static string GetControlID(PersonAttribute attribute)
+        {
+            string prefix;
+
+            switch (attribute.AttributeType)
+            {
+                case DataType.DateTime:
+                    prefix = "dtb";
+                    break;
+                case DataType.Lookup:
+                    prefix = "ddl";
+                    break;
+                case DataType.YesNo:
+                    prefix = "cb";
+                    break;
+                case DataType.Document:
+                    prefix = "dp";
+                    break;
+                default:
+                    prefix = "tb";
+                    break;
+            }
+
+            return string.Format("{0}{1}_{2}", prefix, attribute.AttributeName, attribute.AttributeId);
+        }
+
+        /// <summary>
+        /// Gets an Attribute integer ID value from a the given Control's ID string. It's worth noting that the control should have been
+        /// generated by this class' CreateControl() method.
+        /// </summary>
+        /// <param name="control">Web control to extract ID from</param>
+        /// <returns>int value of Attribute ID</returns>
+        public static int GetAttributeID(Control control)
+        {
+            return control.ID.Substring(control.ID.LastIndexOf('_') + 1).ToInt32();
+        }
+
+        private static void CreateTextBox(PersonAttribute attribute, string cssClass, Control parentContainer, bool setValue, string value)
+        {
+            DynamicTextBox tb = new DynamicTextBox();
+            parentContainer.Controls.Add(tb);
+            tb.ID = GetControlID(attribute);
+            tb.Enabled = !attribute.Readonly;
+            tb.CssClass = cssClass;
+
+            if (setValue)
+            {
+                tb.Text = value;
+            }
+        }
+
+        private static void CreateDateTextBox(PersonAttribute attribute, string cssClass, Control parentContainer, bool setValue)
+        {
+            DynamicDateTextBox dtb = new DynamicDateTextBox();
+            parentContainer.Controls.Add(dtb);
+            dtb.ID = GetControlID(attribute);
+            dtb.Enabled = !attribute.Readonly;
+            dtb.CssClass = cssClass;
+
+            if (setValue)
+            {
+                dtb.Text = attribute.DateValue != DataUtils.Constants.NULL_DATE ? attribute.DateValue.ToShortDateString() : DataUtils.Constants.NULL_STRING;
+            }
+        }
+
+        private static void CreateDropDownList(PersonAttribute attribute, string cssClass, Control parentContainer, bool setValue)
+        {
+            DynamicDropDownList ddl = new DynamicDropDownList();
+            parentContainer.Controls.Add(ddl);
+            ddl.ID = GetControlID(attribute);
+            ddl.Enabled = !attribute.Readonly;
+            ddl.CssClass = cssClass;
+
+            LookupCollection lookups = new LookupCollection(int.Parse(attribute.TypeQualifier));
+
+            if (setValue)
+            {
+                lookups.LoadDropDownList(ddl, attribute.IntValue);
+            }
+            else
+            {
+                lookups.LoadDropDownList(ddl);
+            }
+        }
+
+        private static void CreateCheckBox(PersonAttribute attribute, string cssClass, Control parentContainer, bool setValue)
+        {
+            DynamicCheckBox cb = new DynamicCheckBox();
+            parentContainer.Controls.Add(cb);
+            cb.ID = GetControlID(attribute);
+            cb.Enabled = !attribute.Readonly;
+            cb.CssClass = cssClass;
+
+            if (setValue)
+            {
+                cb.Checked = attribute.IntValue != DataUtils.Constants.NULL_INT ? Convert.ToBoolean(attribute.IntValue) : false;
+            }
+        }
+
+        private static void CreateDocumentPicker(PersonAttribute attribute, string cssClass, Control parentContainer, bool setValue)
+        {
+            DynamicDocumentPicker dp = new DynamicDocumentPicker();
+            parentContainer.Controls.Add(dp);
+            dp.ID = GetControlID(attribute);
+            dp.AllowRemove = !attribute.Required;
+            dp.DocumentTypeID = attribute.TypeQualifier != string.Empty ? int.Parse(attribute.TypeQualifier) : DataUtils.Constants.NULL_INT;
+            dp.Enabled = !attribute.Readonly;
+            dp.CssClass = cssClass;
+
+            if (setValue)
+            {
+                dp.DocumentID = attribute.IntValue;
+            }
+        }
+    }
+}
